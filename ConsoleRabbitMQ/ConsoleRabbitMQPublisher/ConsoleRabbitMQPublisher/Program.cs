@@ -9,7 +9,8 @@ namespace ConsoleRabbitMQPublisher
     {
         static void Main(string[] args)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var hostName = Environment.GetEnvironmentVariable("SERVER");
+            var factory = new ConnectionFactory() { HostName = hostName ?? "rabbitmq" };
 
             string queueName = "fila-1";
 

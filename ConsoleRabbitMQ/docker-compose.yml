@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  publisher-app:
+    build:
+      context: ConsoleRabbitMQPublisher
+    networks:
+      - my-network-console-rabbitmq
+    depends_on:
+      - rabbitmq
+    container_name: publisher-app
+    restart: always
+
+  consumer-app:
+    build:
+      context: ConsoleRabbitMQConsumer
+    networks:
+      - my-network-console-rabbitmq
+    depends_on:
+      - rabbitmq
+      - publisher-app
+    container_name: consumer-app
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3.10-management
+    networks:
+      - my-network-console-rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    container_name: rabbitmq
+    hostname: rabbitmq
+
+networks:
+  my-network-console-rabbitmq:
+    driver: bridge
